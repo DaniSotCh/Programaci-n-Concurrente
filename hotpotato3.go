@@ -11,14 +11,16 @@ import (
 )
 
 var hosts []string = []string{"10.142.232.190:8003",
-                              "10.142.232.182:8000"}
-
+                              "10.142.232.189:8001"}
+var idPropio string
+var idAnterior string
+var lib []string
 const (
     PROT  = "tcp"
     LOCAL = "10.142.232.190:8003"
 )
 
-func send(n int) {
+func send(n string, lib []string) {
     msg  := fmt.Sprintf("%d", n)
     host := hosts[rand.Intn(len(hosts))]
     fmt.Printf("Enviando %d a %s\n", n, host)
@@ -34,25 +36,18 @@ func handle(con net.Conn) {
     msg = strings.TrimSpace(msg)
     if n, err := strconv.Atoi(msg); err == nil {
         fmt.Println("Recibido: ", n)
-        if n == 0 {
-            fmt.Println("Me tocó perder 😞")
-        } else {
-                send(n - 1)
-        }
+
+        fmt.Println(n)
+
     }
 }
 
-func start() {
-    var num int
-    for {
-        fmt.Scanf("%d\n", &num)
-        send(num)
-    }
-}
 
 func main() {
+    idPropio = "10.142.232.190:8003"
+    idAnterior = "10.142.232.190:8003"
     rand.Seed(time.Now().UTC().UnixNano())
-    go start()
+    go send(idPropio, lib)
     ln, _ := net.Listen(PROT, LOCAL)
     defer ln.Close()
     for {
