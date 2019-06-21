@@ -17,7 +17,7 @@ var idAnterior string
 var lib []string
 const (
     PROT  = "tcp"
-    LOCAL = "10.142.232.190:8003"
+    LOCAL = "10.142.232.189:8001"
 )
 
 func send(n string, lib []string) {
@@ -28,6 +28,14 @@ func send(n string, lib []string) {
     defer con.Close()
     fmt.Fprintln(con, msg)
 }
+func start() {
+    var num string
+    for {
+        fmt.Scanf("%d\n", &num)
+        send(num,lib)
+    }
+}
+
 
 func handle(con net.Conn) {
     defer con.Close()
